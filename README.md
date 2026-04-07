@@ -131,3 +131,7 @@ exporters:
   - module: lmtracer.core.exporter.SGLangMetricPrometheusExporter
     params: {}
 ```
+
+An example profiling output for LLM inference is as follows.
+
+<img width="1614" height="805" alt="example_timeline" src="https://github.com/user-attachments/assets/482d216a-a6c9-43f4-b2dd-533e1571a864" />
