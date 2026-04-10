@@ -4,7 +4,7 @@ from lmtracer.core.process_binder import ProcessBinder
 
 ModelRunner = LMTRACER_HOOKED_ORIGINAL["sglang.srt.model_executor.model_runner.ModelRunner"]
 
-class lmtracerModelRunner(ModelRunner):
+class LMTracerModelRunner(ModelRunner):
 
     def __init__(self, *args, **kwargs):
         # Extract dp_rank from kwargs if present, otherwise None
