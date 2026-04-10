@@ -55,7 +55,7 @@ class LazyImportHook(MetaPathFinder):
             being_patched=False,
             patched=False,
             hook_module_names={
-                "sglang.srt.model_executor.model_runner.ModelRunner": "lmtracer.plugins.sglang.srt.model_executor.model_runner.lmtracerModelRunner"
+                "sglang.srt.model_executor.model_runner.ModelRunner": "lmtracer.plugins.sglang.srt.model_executor.model_runner.LMTracerModelRunner"
             }
         )
 
