@@ -1,0 +1,33 @@
+
+dump_mode: doorbell
+llm_engine: sglang
+
+num_flush: 102400
+probes:
+  - phase: model
+    class_name: sglang.srt.models.gpt_oss.GptOssModel
+    inner_graph: false
+  - phase: decoder_layer
+    class_name: sglang.srt.models.gpt_oss.GptOssDecoderLayer
+    inner_graph: true
+  - phase: mlp
+    class_name: sglang.srt.models.gpt_oss.GptOssSparseMoeBlock
+    inner_graph: true
+  - phase: attention
+    class_name: sglang.srt.models.gpt_oss.GptOssAttention
+    inner_graph: true
+  - phase: norm
+    class_name: sglang.srt.layers.layernorm.RMSNorm
+    inner_graph: true
+  # - phase: sampling
+  #   class_name: vllm.v1.sample.sampler.Sampler
+  #   inner_graph: false
+exporters:
+  # Exporter 1: Save binary trace data to files
+  - class_name: lmtracer.core.exporter.FileByteDataExporter
+    params:
+      output_dir: /tmp/lmtracer_exports
+  
+  # Exporter 2: Export metrics to Prometheus
+  - class_name: lmtracer.core.exporter.SGLangMetricPrometheusExporter
+    params: {}

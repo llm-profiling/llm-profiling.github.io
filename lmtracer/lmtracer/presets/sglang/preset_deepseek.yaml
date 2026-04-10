@@ -1,0 +1,33 @@
+
+dump_mode: doorbell
+llm_engine: sglang
+
+num_flush: 1024
+probes:
+  - phase: model
+    class_name: sglang.srt.models.deepseek_v2.DeepseekV2Model
+    inner_graph: false
+  - phase: decoder_layer
+    class_name: sglang.srt.models.deepseek_v2.DeepseekV2DecoderLayer
+    inner_graph: true
+  - phase: moe
+    class_name: sglang.srt.models.deepseek_v2.DeepseekV2MoE
+    inner_graph: true
+  - phase: mlp
+    class_name: sglang.srt.models.deepseek_v2.DeepseekV2MLP
+    inner_graph: true
+  - phase: attention
+    class_name: sglang.srt.models.deepseek_v2.DeepseekV2AttentionMLA
+    inner_graph: true
+  # - phase: sampling
+  #   class_name: sglang.srt.sample.sampler.Sampler
+  #   inner_graph: false
+exporters:
+  # Exporter 1: Save binary trace data to files
+  # - class_name: lmtracer.core.exporter.FileByteDataExporter
+  #   params:
+  #     output_dir: /tmp/lmtracer_exports
+  
+  # Exporter 2: Export metrics to Prometheus
+  - class_name: lmtracer.core.exporter.SGLangMetricPrometheusExporter
+    params: {}

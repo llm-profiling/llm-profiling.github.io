@@ -1,0 +1,40 @@
+# LMTracer Multiple Exporters Configuration Example
+# This example shows how to configure multiple exporters simultaneously
+
+
+dump_mode: doorbell
+llm_engine: sglang
+
+num_flush: 1024
+probes:
+  - phase: model
+    class_name: sglang.srt.models.qwen3.Qwen3Model
+    inner_graph: false
+  - phase: decoder_layer
+    class_name: sglang.srt.models.qwen3.Qwen3DecoderLayer
+    inner_graph: true
+  - phase: mlp
+    class_name: sglang.srt.models.qwen2.Qwen2MLP
+    inner_graph: true
+  - phase: attention
+    class_name: sglang.srt.models.qwen3.Qwen3Attention
+    inner_graph: true
+  # - phase: sampling
+  #   class_name: sglang.srt.v1.sample.sampler.Sampler
+  #   inner_graph: false
+# Multiple exporters configuration
+# All exporters will receive the same trace data
+exporters:
+  # Exporter 1: Save binary trace data to files
+  - class_name: lmtracer.core.exporter.FileByteDataExporter
+    params:
+      output_dir: /tmp/lmtracer_exports
+  
+  # Exporter 2: Export metrics to Prometheus
+  - class_name: lmtracer.core.exporter.SGLangMetricPrometheusExporter
+    params: {}
+  
+  # # Exporter 3: Generate Perfetto trace file
+  # - class_name: lmtracer.core.exporter.PerfettoExporter
+  #   params:
+  #     output_file: /tmp/lmtracer_trace.perfetto

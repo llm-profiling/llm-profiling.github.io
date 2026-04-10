@@ -1,0 +1,23 @@
+[project]
+name = "lmtracer"
+version = "0.1.0"
+authors = [{name = "Anonymous"}]
+description = "Lightweight LLM runtime tracer"
+
+[project.entry-points."vllm.platform_plugins"]
+lmtracer = "lmtracer.plugins.vllm:register"
+
+[tool.setuptools.package-data]
+"lmtracer" = [
+    "presets/sglang/*.yaml",
+    "presets/vllm/*.yaml",
+    "presets/megatron/*.yaml"
+]
+
+[build-system]
+requires = [
+    "setuptools",
+    "wheel",
+    "torch"
+]
+build-backend = "setuptools.build_meta"

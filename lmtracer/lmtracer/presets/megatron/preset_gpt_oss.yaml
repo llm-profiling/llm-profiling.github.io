@@ -1,0 +1,34 @@
+
+dump_mode: doorbell
+llm_engine: megatron
+
+num_flush: 32
+probes:
+  - phase: model
+    class_name: megatron.core.models.gpt.gpt_model.GPTModel
+    inner_graph: false
+  - phase: embedding
+    class_name: megatron.core.models.common.embeddings.language_model_embedding.LanguageModelEmbedding
+    inner_graph: false
+  - phase: decoder
+    class_name: megatron.core.transformer.transformer_block.TransformerBlock
+    inner_graph: false
+  - phase: transformer_layer
+    class_name: megatron.core.transformer.transformer_layer.TransformerLayer
+    inner_graph: false
+  - phase: attention
+    class_name: megatron.core.transformer.attention.Attention
+    inner_graph: false
+  - phase: mlp
+    class_name: megatron.core.transformer.mlp.MLP
+    inner_graph: false
+  - phase: mtp
+    class_name: megatron.core.transformer.multi_token_prediction.MultiTokenPredictionBlock
+    inner_graph: false
+  - phase: output_layer
+    class_name: megatron.core.tensor_parallel.layers.ColumnParallelLinear
+    inner_graph: false
+exporter:
+  class_name: lmtracer.core.exporter.FileByteDataExporter
+  params:
+    output_dir: /tmp/lmtracer_exports

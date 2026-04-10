@@ -1,0 +1,23 @@
+
+dump_mode: doorbell
+engine: sglang
+
+probe_groups:
+  - name: default
+    num_flush: 1024
+    probes:
+      - phase: model
+        class_name: vllm.model_executor.models.gemma3.Gemma3Model
+        inner_graph: false
+      - phase: decoder_layer
+        class_name: vllm.model_executor.models.gemma3.Gemma3DecoderLayer
+        inner_graph: true
+      - phase: mlp
+        class_name: vllm.model_executor.models.gemma3.Gemma3MLP
+        inner_graph: true
+      - phase: attention
+        class_name: vllm.model_executor.models.gemma3.Gemma3Attention
+        inner_graph: true
+      - phase: sampling
+        class_name: vllm.v1.sample.sampler.Sampler
+        inner_graph: false

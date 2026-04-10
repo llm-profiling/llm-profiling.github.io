@@ -1,0 +1,30 @@
+
+dump_mode: doorbell
+llm_engine: vllm
+
+num_flush: 1024
+probes:
+  - phase: model
+    class_name: vllm.model_executor.models.qwen3.Qwen3Model
+    inner_graph: false
+  - phase: decoder_layer
+    class_name: vllm.model_executor.models.qwen3.Qwen3DecoderLayer
+    inner_graph: true
+  - phase: mlp
+    class_name: vllm.model_executor.models.qwen2.Qwen2MLP
+    inner_graph: true
+  - phase: attention
+    class_name: vllm.model_executor.models.qwen3.Qwen3Attention
+    inner_graph: true
+  - phase: sampling
+    class_name: vllm.v1.sample.sampler.Sampler
+    inner_graph: false
+exporters:
+  # Exporter 1: Save binary trace data to files
+  # - class_name: lmtracer.core.exporter.FileByteDataExporter
+  #   params:
+  #     output_dir: /tmp/lmtracer_exports
+  
+  # Exporter 2: Export metrics to Prometheus (vLLM specific)
+  - class_name: lmtracer.core.exporter.VLLMMetricPrometheusExporter
+    params: {}

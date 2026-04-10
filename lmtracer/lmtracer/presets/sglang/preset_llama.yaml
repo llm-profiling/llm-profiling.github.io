@@ -1,0 +1,23 @@
+
+dump_mode: doorbell
+engine: sglang
+
+probe_groups:
+  - name: default
+    num_flush: 1024
+    probes:
+      - phase: model
+        class_name: vllm.model_executor.models.llama.LlamaModel
+        inner_graph: false
+      - phase: decoder_layer
+        class_name: vllm.model_executor.models.llama.LlamaDecoderLayer
+        inner_graph: true
+      - phase: mlp
+        class_name: vllm.model_executor.models.llama.LlamaMLP
+        inner_graph: true
+      - phase: attention
+        class_name: vllm.model_executor.models.llama.LlamaAttention
+        inner_graph: true
+      - phase: sampling
+        class_name: vllm.v1.sample.sampler.Sampler
+        inner_graph: false

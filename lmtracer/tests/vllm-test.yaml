@@ -1,0 +1,46 @@
+# LLM Engine Test Configuration - vLLM Example
+
+llm_engine: vllm
+
+# Engine-specific server configuration
+server:
+  model: meta-llama/Llama-2-7b-chat-hf
+  
+  # vLLM specific parameters
+  vllm:
+    host: 127.0.0.1
+    port: 8000
+    tensor_parallel_size: 1
+    gpu_memory_utilization: 0.9
+    max_model_len: 4096
+    
+  # Common server parameters
+  common:
+    trust_remote_code: true
+    tokenizer_mode: auto
+
+# Benchmark configuration
+benchmark:
+  backend: vllm
+  script: vllm.entrypoints.openai.api_server  # Or use custom benchmark script
+  
+  # Benchmark parameters
+  params:
+    dataset_name: sharegpt
+    num_prompts: 1000
+    request_rate: 4
+    output_len: 512
+    tokenizer: meta-llama/Llama-2-7b-chat-hf
+    
+  # Additional benchmark options
+  options:
+    seed: 42
+    disable_tqdm: false
+    save_result: true
+    result_dir: ./benchmark_results
+
+# Test execution settings
+execution:
+  warmup_requests: 10
+  wait_for_ready_timeout: 300
+  cleanup_on_exit: true
