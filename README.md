@@ -14,9 +14,9 @@ In this paper, we present LMTracer, a fine-grained and real-time performance pro
 
 ## 2. Code
 
-The code for release is currently undergoing the internal review. Once the review process is completed, we will make the corresponding content publicly available.
+The code for LMTracer is available [here](https://github.com/llm-profiling/llm-profiling.github.io/tree/main/lmtracer).
 
-The code is organized as follows:
+The directory is organized as follows.
 
 <table>
   <tr>
@@ -56,13 +56,12 @@ The code is organized as follows:
   <tr><td>exporter.py</td></tr>
   <tr><td>time_sync.py</td></tr>
   <tr>
-    <td rowspan='4'>lmtracer/cuda</td>
-    <td rowspan='4'>Python bindings/type stubs for CUDA extensions used by probe recording and clock reads.</td>
+    <td rowspan='3'>lmtracer/cuda</td>
+    <td rowspan='3'>Python bindings/type stubs for CUDA extensions used by probe recording and clock reads.</td>
     <td>globaltimer.pyi</td>
   </tr>
   <tr><td>timer_kernel.pyi</td></tr>
   <tr><td>timer_mem.pyi</td></tr>
-  <tr><td>__init__.py</td></tr>
   <tr>
     <td rowspan='8'>lmtracer/plugins</td>
     <td rowspan='8'>Framework integration layer. Patches or wraps upstream runtime entrypoints so LMTracer can initialize and flush traces during serving/training.</td>
@@ -95,14 +94,22 @@ The code is organized as follows:
 After cloning the repository, you can install LMTracer with the following command:
 
 ```bash
-pip install -e ./lmtracer --no-build-isolation
+pip install ./lmtracer --no-build-isolation
 ```
+
+> Note: LMTracer does not support editable mode (i.e., the *-e* option for *pip install*) of Python installation, or the hooks to LLM frameworks will be invalidated.
 
 Then, LMTracer can be automatically enabled for supported frameworks (e.g., vLLM, SGLang, and Megatron) and models (e.g., DeepSeek V3, Qwen3, and GPT OSS) without any code changes.
 
+The supported versions of the tested LLM frameworks are:
+
+* **vLLM** v0.9.2, v0.11.2
+* **SGLang** v0.5.6, v0.5.7
+* **MegatronLM** v0.15.2
+
 You can also specify custom profiling configurations to capture different levels of details for different frameworks and models.
 
-An example of LMTracer configuration is as follows:
+An example of LMTracer configuration is as follows.
 
 ```yaml
 llm_engine: sglang
