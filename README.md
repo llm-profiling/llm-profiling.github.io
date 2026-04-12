@@ -5,6 +5,7 @@
 * [Introduction](#1-introduction)
 * [Code](#2-code)
 * [Usage](#3-usage)
+* [Case](#4-case)
 
 ## 1. Introduction
 
@@ -142,3 +143,73 @@ exporters:
 An example profiling output for LLM inference is as follows.
 
 <img width="1614" alt="example_timeline" src="https://github.com/user-attachments/assets/482d216a-a6c9-43f4-b2dd-533e1571a864" />
+
+## 4. Case
+
+After the real-world deployment, LMTracer has proactively uncovered 15 latent performance issues.
+Below we list representative issues that LMTracer has helped identify, and the corresponding subsequent failures that would occur if the issue is not handled immediately.
+
+<table>
+  <tr>
+    <td>Component</td>
+    <td>Root Cause</td>
+    <td>Symptom</td>
+    <td>Subsequent Failure</td>
+  </tr>
+  <tr>
+    <td>Configuration</td>
+    <td>Improper layer placement</td>
+    <td>PP stages are much longer.</td>
+    <td>Users' SLA is not satisfied.</td>
+  </tr>
+  
+  <tr>
+    <td>Configuration</td>
+    <td>Improper parallelism</td>
+    <td>TP groups use slow paths.</td>
+    <td>Users' SLA is not satisfied.</td>
+  </tr>
+  
+  <tr>
+    <td>Configuration</td>
+    <td>Not using CUDA graph</td>
+    <td>Separate kernel launching.</td>
+    <td>Some GPUs straggle.</td>
+  </tr>
+  
+  <tr>
+    <td>Framework</td>
+    <td>Unbalanced scheduling</td>
+    <td>Some GPUs are busier.</td>
+    <td>Inefficiency propagates.</td>
+  </tr>
+  
+  <tr>
+    <td>Framework</td>
+    <td>KV cache eviction</td>
+    <td>Repeated computation.</td>
+    <td>Some GPUs straggle.</td>
+  </tr>
+  
+  <tr>
+    <td>Framework</td>
+    <td>Prefill blocking</td>
+    <td>High TTFT for users.</td>
+    <td>Decoding GPUs are underutilized.</td>
+  </tr>
+
+  <tr>
+    <td>Hardware</td>
+    <td>NVLink down</td>
+    <td>Training process is stalled.</td>
+    <td>Training is silently halted.</td>
+  </tr>
+
+  <tr>
+    <td>Hardware</td>
+    <td>RNIC flapping</td>
+    <td>Intermittent unconnectivity.</td>
+    <td>Training tasks are failed.</td>
+  </tr>
+  
+</table>
